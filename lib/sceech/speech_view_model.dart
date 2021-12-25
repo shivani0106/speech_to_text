@@ -13,6 +13,7 @@ class SpeechViewModel with ChangeNotifier {
   bool _isListening = false;
   var newSearchKeyword = "Press the button to Start speaking";
   APIResponse apiResponse;
+  bool apiResponseGet;
 
   attachContext(BuildContext context) {
     mContext = context;
@@ -24,6 +25,7 @@ class SpeechViewModel with ChangeNotifier {
         headers: {
           "Authorization": "Token 08a5e3222b8be11a8bdcbaa455cb0f7ab1e7f608"
         });
+    print(response.body.toString());
     if (response.statusCode == 200) {
       return APIResponse.fromJson(json.decode(response.body));
     } else {
@@ -56,7 +58,14 @@ class SpeechViewModel with ChangeNotifier {
         _speech.listen(onResult: (val) {
           newSearchKeyword = val.recognizedWords;
           print("show word=>" + newSearchKeyword);
-          getApiResponse(newSearchKeyword);
+          getApiResponse(newSearchKeyword).then((value) {
+            if (value) {
+              apiResponseGet = value;
+            } else {
+              apiResponseGet = false;
+            }
+            notifyListeners();
+          });
         });
       }
       notifyListeners();

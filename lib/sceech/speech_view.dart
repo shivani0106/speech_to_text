@@ -99,12 +99,20 @@ class _SpeechScreenState extends State<SpeechScreen> {
                           SizedBox(
                             height: 50,
                           ),
-                          Container(
-                            height: 100,
-                            width: 100,
-                            child: Image.network(
-                                mViewModel.apiResponse.definitions[0].imageUrl),
-                          )
+                          mViewModel.apiResponse.definitions[0].imageUrl != null
+                              ? Container(
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.network(mViewModel
+                                      .apiResponse.definitions[0].imageUrl),
+                                )
+                              : Container(
+                                  alignment: Alignment.center,
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.network(
+                                      "https://drive.google.com/file/d/1WF2JjPdgtuSudM3bYZRgcV31wOAlFo6R/view"),
+                                )
                         ],
                       ),
             FloatingActionButton(
