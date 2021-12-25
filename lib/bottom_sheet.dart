@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:speech_to_text/speech_recognition_error.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class MyBottomSheet extends StatefulWidget {
@@ -12,7 +9,7 @@ class MyBottomSheet extends StatefulWidget {
 }
 
 class _MyBottomSheetState extends State<MyBottomSheet> {
-  stt.SpeechToText? _speech;
+  stt.SpeechToText _speech;
   bool _isListening = false;
   String _text = 'Press the button and start speaking';
   String showSearchValue = "Speak now";
@@ -27,19 +24,19 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
 
   void _listen() async {
     if (!_isListening) {
-      bool available = await _speech!.initialize(
+      bool available = await _speech.initialize(
           onStatus: (val) => print('onStatus: $val'),
           onError: (val) => print('onError: $val'),
           debugLogging: true);
       print("hdjfhd=>" + available.toString());
       if (available) {
         setState(() => _isListening = true);
-        _speech!.listen(
+        _speech.listen(
           onResult: (val) {
             setState(() {
               showSearchValue = val.recognizedWords;
               print("show word=>" + showSearchValue);
-              if (val.recognizedWords != null && !_speech!.isListening) {
+              if (val.recognizedWords != null && !_speech.isListening) {
                 Future.delayed(Duration(milliseconds: 1000), () {
                   if (mounted) Navigator.pop(context, showSearchValue);
                 });
@@ -50,7 +47,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
       }
     } else {
       setState(() => _isListening = false);
-      _speech!.stop();
+      _speech.stop();
     }
   }
 
